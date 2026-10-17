@@ -1,8 +1,13 @@
 (function () {
+  // Waits for window.O (or <script type="application/json" id="d">) because the inline data script may run after this one.
+  var tries = 0;
+  function data() { if (window.O) return window.O; var e = document.getElementById("d"); if (e) { try { return JSON.parse(e.textContent); } catch (x) {} } return null; }
+  function start() { var d = data(); if (!d && tries++ < 50) { setTimeout(start, 100); return; } run(d || {}); }
+  function run(DATA) {
   // Order card for the waiter, in the menu's language.
-  // Data: window.O = {lang:"vi"|"th", items:[{n, name, en, p (number, local currency), k:"f"|"d"}], L:{optional phrase overrides}}
+  // Data: {lang:"vi"|"th", items:[{n, name, en, p (number, local currency), k:"f"|"d"}], L:{optional phrase overrides}}
   // An array is also accepted (old format, Vietnamese, name in "vi").
-  var D = window.O || {}, app = document.getElementById("app");
+  var D = DATA, app = document.getElementById("app");
   if (Array.isArray(D)) D = { lang: "vi", items: D };
   var PACKS = {
     vi: { hi: "Cho mình gọi:", ty: "Cảm ơn!", away: ["Mang về", "Takeaway"], cur: "đ", loc: "vi-VN",
@@ -65,4 +70,6 @@
   foot.appendChild(el("div", "big", P.ty));
   var ty = el("div", "sm", "Thank you"); ty.appendChild(tot); foot.appendChild(ty);
   box.appendChild(foot); app.appendChild(box); render();
+  }
+  start();
 })();
