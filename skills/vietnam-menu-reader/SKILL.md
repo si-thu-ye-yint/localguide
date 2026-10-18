@@ -19,6 +19,13 @@ Repeat for each new photo. Wait until the user says go / ok / done.
 ## B. User says go: show the menu list
 
 1. Read every item from all photos since the last menu. Keep local names as printed (normal capitalization). Use the menu's printed item numbers; if none, number 1, 2, 3... Keep prices as printed.
+1b. Read section headers and small print too. If a header says the dish comes with a choice of base, for example "(PHỞ / HỦ TIẾU / MIẾN / MỲ)", the meats or toppings listed below are NOT the full dish: the customer picks one base AND one topping, and the price follows the topping. Then:
+   - Add a FIRST section "Chọn bánh · Step 1: pick your noodle" with one row per base, lettered A, B, C... (letters instead of numbers), short English (for example Phở "Flat rice noodles", Miến "Glass noodles", Mỳ "Wheat egg noodles"), price "same price", photo 0. Look up and save these bases like any other item.
+   - Name the next section "Chọn thịt · Step 2: pick your meat" (or the matching local/English names) and keep its rows numbered as printed.
+   - Put "Same price for any noodle" in `u` when that is what the menu shows.
+   - Keep add-on notes as printed, for example "Any 2 meats (bắp bò +15k)".
+   - If part of the header is hidden or unreadable in the photo, leave that option out and say so in the chat line.
+   Letters work like numbers in sections C and D ("Tell me more: A Phở, 1 Tái"; "I will order: A Phở, 1 Tái"). In D, a noodle plus meat is one item: name "Phở tái", price from the meat row.
 2. Look them up in ONE call. For Vietnamese regional short names add the standard name in brackets so they match, for example 'Nâu (cà phê sữa)' (Nâu is the Hanoi word for milk coffee), 'Đen (cà phê đen)'.
 ```sql
 select public.menu_lookup(array['Cơm tấm sườn','Cơm tấm xá xíu']);
